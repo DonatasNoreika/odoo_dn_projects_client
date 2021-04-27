@@ -1,11 +1,8 @@
 import functools
 import xmlrpc.client
+from config import HOST, PORT, DB, USER, PASS
+import datetime
 
-HOST = 'localhost'
-PORT = 8069
-DB = 'projects'
-USER = 'admin'
-PASS = 'admin'
 ROOT = f'http://{HOST}:{PORT}/xmlrpc/'
 
 uid = xmlrpc.client.ServerProxy(ROOT + 'common').login(DB,USER,PASS)
@@ -32,8 +29,6 @@ def print_all_leaders():
     for leader in leaders:
         print(leader['id'], leader['name'])
 
-print_all_leaders()
-
 # def create_project():
 
 # 3.create a new session
@@ -41,6 +36,37 @@ print_all_leaders()
 # course_id = call('openacademy.course', 'search', [('name','ilike','Course 3')])[0]
 # instructor_id = call('res.partner', 'search', [('name','ilike','Admin')])[0]
 #
-# project_id = call('dn_projects.project', 'create', {
-#     'name' : 'Naujas projektas',
-# })
+
+
+while True:
+    pasirinkimas = int(input("""Pasirinkite:
+    1 - peržiūrėti projektus
+    2 - įrašyti projektą
+    3 - išeiti iš programos
+    """))
+    if pasirinkimas == 1:
+        print_all_projects()
+    if pasirinkimas == 2:
+        name = input("Pavadinimas:\n")
+        description = input("Aprašymas:\n")
+        start_date = str(datetime.datetime.today())
+        trukme = int(input("Trukmė (dienomis)"))
+        end_date = str(datetime.date.today() + datetime.timedelta(days=trukme))
+        print_all_clients()
+        client_id = int(input("Kliento ID:\n"))
+        print_all_leaders()
+        leader_id = int(input("Vadovo ID:\n"))
+        try:
+            project_id = call('dn_projects.project', 'create', {
+                'name': name,
+                'description': description,
+                'start_date': start_date,
+                'end_date': end_date,
+                'client_id': client_id,
+                'leader_id': leader_id,
+        })
+            print(f"Projektas {name} įrašytas")
+        except:
+            print("Nepavyko įrašyti projekto")
+    if pasirinkimas == 3:
+        print("Viso gero")
