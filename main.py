@@ -67,3 +67,4 @@ while True:
             print("Nepavyko įrašyti projekto")
     if pasirinkimas == 3:
         print("Viso gero")
+        break
