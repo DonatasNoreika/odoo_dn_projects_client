@@ -25,12 +25,14 @@ def print_all_projects():
 
 def print_all_clients():
     clients = call('res.partner', 'search_read', [], ['name'])
+    print("CLIENTS:")
     for client in clients:
         print(client['id'], client['name'])
 
 
 def print_all_leaders():
     leaders = call('hr.employee', 'search_read', [('leader', '=', True)], ['name'])
+    print("LEADERS:")
     for leader in leaders:
         print(leader['id'], leader['name'])
 
